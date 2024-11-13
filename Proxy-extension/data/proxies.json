@@ -1,0 +1,21 @@
+{
+    "predefinedProxies": [
+      {
+        "name": "United Kingdom",
+        "host": "5.252.71.192",
+        "username": "user227646",
+        "password": "6pw4td",
+        "httpPort": 5919,
+        "protocol": "http"
+      },
+      {
+        "name": "United States(not working)",
+        "host": "107.167.27.58",
+        "username": "Rwv11ERX",
+        "password": "1eA9SvE2",
+        "httpPort": 59658,
+        "protocol": "http"
+      }
+    ]
+  }
+  
