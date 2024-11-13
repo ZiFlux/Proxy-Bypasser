@@ -1,0 +1,283 @@
+/* Основные стили */
+body {
+  font-family: 'Arial', sans-serif;
+  width: 300px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Статус */
+#status {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+#proxy-status {
+  font-weight: bold;
+  color: #d9534f;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Анимация плавного появления */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Вкладки */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  background-color: #e9ecef;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tab-button:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.tab-button:active {
+  background-color: #0056b3;
+}
+
+.tab-content {
+  display: none;
+  margin-bottom: 10px;
+}
+
+.tab-content.active {
+  display: block;
+  animation: slideDown 0.5s ease;
+}
+
+/* Анимация слайда для вкладок */
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Ввод данных */
+label {
+  font-weight: bold;
+  margin: 10px 0 5px;
+  display: block;
+}
+
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, textarea:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: #007bff;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+/* Кнопки */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+button:active {
+  background-color: #1e7e34;
+}
+
+button#toggleProxy {
+  background-color: #17a2b8;
+}
+
+button#toggleProxy:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+/* Переливающийся градиентный фон */
+body {
+  font-family: 'Arial', sans-serif;
+  width: 300px;
+  padding: 10px;
+  background: linear-gradient(135deg, #232526, #414345, #232526);
+  background-size: 400% 400%;
+  color: #eee;
+  border-radius: 8px;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Статус */
+#status {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+#proxy-status {
+  font-weight: bold;
+  color: #f47a60;
+}
+
+/* Вкладки */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 8px 12px;
+  background-color: #333;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab-button.active,
+.tab-button:hover {
+  background-color: #555;
+  color: #f7f7f7;
+}
+
+.tab-content {
+  display: none;
+  margin-bottom: 15px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Инпуты */
+label {
+  font-weight: bold;
+  margin: 10px 0 5px;
+  display: block;
+}
+
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #2b2b2b;
+  color: #eee;
+  font-size: 14px;
+}
+
+/* Кнопки */
+button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #ff6f61, #ff896b);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff896b, #ff6f61);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Кнопка включения прокси */
+button#toggleProxy {
+  background: linear-gradient(135deg, #0073e6, #0099ff);
+}
+
+button#toggleProxy:hover {
+  background: linear-gradient(135deg, #0099ff, #0073e6);
+}
+
+/* Логотип */
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logo .icon {
+  font-size: 24px;
+  margin-right: 8px;
+  color: #ff6f61;
+  animation: spin 2s linear infinite;
+}
+
+.logo h3 {
+  font-size: 24px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6f61, #ff896b);
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradientText 3s ease infinite;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Анимации */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes gradientText {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
