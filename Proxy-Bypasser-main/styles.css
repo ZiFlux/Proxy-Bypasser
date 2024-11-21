@@ -1,0 +1,189 @@
+/* Подключение шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Основные стили */
+body {
+  font-family: 'Arial', sans-serif;
+  width: 300px;
+  padding: 10px;
+  background: linear-gradient(135deg, #697880, #414345, #697880);
+  background-size: 400% 400%;
+  color: #eee;
+  border-radius: 8px;
+  animation: gradientBG 8s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Статус */
+#status {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+#proxy-status {
+  font-weight: bold;
+  color: #f47a60;
+}
+
+/* Вкладки */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 8px 12px;
+  background-color: #333;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab-button.active,
+.tab-button:hover {
+  background-color: #555;
+  color: #f7f7f7;
+}
+
+.tab-content {
+  display: none;
+  margin-bottom: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Инпуты */
+label {
+  font-weight: bold;
+  margin: 10px 0 5px;
+  display: block;
+}
+
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #2b2b2b;
+  color: #eee;
+  font-size: 14px;
+}
+
+/* Кнопки */
+button {
+  width: 100%;
+  padding: 8px; /* Уменьшен отступ кнопки */
+  background: linear-gradient(135deg, #4e73df, #2a6ec1); /* Добавлен синий градиент */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px; /* Уменьшен размер шрифта */
+  font-family: 'Press Start 2P', cursive; /* Новый стиль для шрифта кнопок */
+  transition: background 0.3s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #2a6ec1, #4e73df);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Кнопка включения прокси */
+button#toggleProxy {
+  background: linear-gradient(135deg, #1e90ff, #1c7ed6); /* Синий оттенок */
+}
+
+button#toggleProxy:hover {
+  background: linear-gradient(135deg, #1c7ed6, #1e90ff);
+}
+
+/* Логотип */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  font-family: 'Share Tech Mono', monospace; /* Используем более сдержанный и современный шрифт */
+}
+
+.logo .icon {
+  font-size: 30px;
+  margin-right: 15px;
+  color: #4e73df; /* Цвет для иконки */
+  animation: spin 3s linear infinite;
+}
+
+.logo h3 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #2a6ec1; /* Тёмно-синий цвет */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.5);
+  animation: gradientText 3s ease infinite;
+  position: relative;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes gradientText {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* SVG логотипа */
+.logo svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  animation: svgPulse 5s ease-in-out infinite;
+}
+
+@keyframes svgPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+}
+
+/* Пульсация зрачка */
+@keyframes eyeBlink {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Увеличение и уменьшение зрачка с эффектом пульсации */
+.logo .icon svg {
+  animation: eyeBlink 3s infinite ease-in-out;
+}
+
+.glowing-eye {
+  filter: drop-shadow(0 0 10px #32CD32) drop-shadow(0 0 20px #32CD32);
+  transition: filter 0.3s ease-in-out;
+}
