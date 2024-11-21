@@ -59,25 +59,13 @@ function setProxy() {
         updateProxyStatus(`Подключено: ${proxyName}`);
       });
     }
-
-    chrome.webRequest.onBeforeSendHeaders.addListener(
-      (details) => {
-        if (proxyConfig.username && proxyConfig.password) {
-          const authHeader = 'Basic ' + btoa(`${proxyConfig.username}:${proxyConfig.password}`);
-          details.requestHeaders.push({ name: "Proxy-Authorization", value: authHeader });
-          return { requestHeaders: details.requestHeaders };
-        }
-      },
-      { urls: ["<all_urls>"] },
-      ["blocking", "requestHeaders"]
-    );
   });
 }
 
 // Обновление статуса
 function updateProxyStatus(status) {
   chrome.runtime.sendMessage({ type: 'updateStatus', status }, () => {
-    if (chrome.runtime.lastError) console.error("Ошибка при отправке сообщения статуса");
+    if (chrome.runtime.lastError) console.log("Ошибка при отправке сообщения статуса");
   });
 }
 

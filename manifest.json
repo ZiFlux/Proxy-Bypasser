@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Proxy Bypass",
-  "version": "2.0",
+  "name": "NetLiberator",
+  "version": "2.1",
   "description": "Browser extension to bypass regional restrictions using a proxy.",
   "permissions": [
     "proxy",
@@ -9,7 +9,6 @@
     "tabs",
     "activeTab",
     "scripting",
-    "webRequest",
     "identity",
     "webNavigation"
   ],

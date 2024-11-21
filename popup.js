@@ -39,11 +39,18 @@ document.querySelectorAll('.tab-button').forEach(button => {
     
     // Снятие активного класса с других кнопок и вкладок
     document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+      content.style.opacity = 0; // Сбросить анимацию
+    });
 
     // Добавление активного класса к выбранной кнопке и вкладке
     button.classList.add('active');
-    document.getElementById(`${tab}-tab`).classList.add('active');
+    const activeTab = document.getElementById(`${tab}-tab`);
+    activeTab.classList.add('active');
+    setTimeout(() => {
+      activeTab.style.opacity = 1; // Запустить анимацию появления вкладки
+    }, 10); // Небольшая задержка для корректного старта анимации
   });
 });
 
@@ -53,7 +60,7 @@ function toggleSpecificSitesInput() {
   document.getElementById('specificSites').style.display = selectedMode === 'specific' ? 'block' : 'none';
 }
 
-// Сохранение настроек при загрузке страницы
+// Сохранение состояния при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   const predefinedProxiesSelect = document.getElementById('predefinedProxies');
   const toggleProxyButton = document.getElementById('toggleProxy');
@@ -61,11 +68,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const sitesListElement = document.getElementById('sitesList');
   const proxyModeRadioButtons = document.querySelectorAll('input[name="proxyMode"]');
 
-  // Инициализация отображения поля при загрузке
-  chrome.storage.sync.get(['proxyMode', 'specificSites'], (data) => {
-    document.querySelector(`input[name="proxyMode"][value="${data.proxyMode || 'all'}"]`).checked = true;
-    toggleSpecificSitesInput();
+  // Восстановление сохраненного состояния из chrome.storage.sync
+  chrome.storage.sync.get(['proxyEnabled', 'predefinedProxy', 'customProxy', 'proxyMode', 'specificSites'], (data) => {
+    console.log('Loaded settings:', data);
 
+    // Восстановление состояния кнопки включения/выключения прокси
+    if (data.proxyEnabled !== undefined) {
+      toggleProxyButton.innerText = data.proxyEnabled ? 'Disable Proxy' : 'Enable Proxy';
+      updateProxyStatus(data.proxyEnabled ? "Подключено" : "Отключено");
+    }
+
+    // Восстановление состояния выбранного прокси
+    if (data.predefinedProxy) {
+      // Если был выбран предустановленный прокси
+      predefinedProxiesSelect.value = JSON.stringify(data.predefinedProxy);
+      applyProxySettings(data.predefinedProxy);
+    } else if (data.customProxy) {
+      // Если был сохранен пользовательский прокси
+      applyProxySettings(data.customProxy);
+    }
+
+    // Восстановление состояния режима прокси
+    if (data.proxyMode) {
+      document.querySelector(`input[name="proxyMode"][value="${data.proxyMode}"]`).checked = true;
+      toggleSpecificSitesInput();
+    }
+
+    // Восстановление списка сайтов для режима "specific"
     if (data.specificSites) {
       sitesListElement.value = data.specificSites.join(', ');
     }
@@ -75,7 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
   proxyModeRadioButtons.forEach(radio => {
     radio.addEventListener('change', () => {
       toggleSpecificSitesInput();
-      chrome.storage.sync.set({ proxyMode: radio.value });
+      chrome.storage.sync.set({ proxyMode: radio.value }, () => {
+        console.log(`Proxy mode saved: ${radio.value}`);
+      });
     });
   });
 
@@ -141,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newStatus = !data.proxyEnabled;
         chrome.storage.sync.set({ proxyEnabled: newStatus }, () => {
           toggleProxyButton.innerText = newStatus ? 'Disable Proxy' : 'Enable Proxy';
-          updateProxyStatus(newStatus ? "Подключение..." : "Отключено");
+          updateProxyStatus(newStatus ? "Подключено" : "Отключено");
         });
       });
     });
@@ -150,10 +181,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Функция для обновления статуса
   function updateProxyStatus(status) {
     const statusElement = document.getElementById('proxy-status');
+    const logoElement = document.querySelector('.logo svg');
+    const logoGradient = document.querySelector('#grad stop:first-child');
+    const logoGradientStop2 = document.querySelector('#grad stop:last-child');
+  
     if (statusElement) {
       statusElement.textContent = status;
+  
+      if (status === "Подключено") {
+        // Зелёный цвет для градиента и включение свечения
+        if (logoGradient && logoGradientStop2) {
+          logoGradient.style.stopColor = '#32CD32'; // LimeGreen
+          logoGradientStop2.style.stopColor = '#2E8B57'; // SeaGreen
+        }
+        logoElement.classList.add('glowing-eye');
+      } else {
+        // Исходный цвет для градиента и отключение свечения
+        if (logoGradient && logoGradientStop2) {
+          logoGradient.style.stopColor = '#ff6f61';
+          logoGradientStop2.style.stopColor = '#ff896b';
+        }
+        logoElement.classList.remove('glowing-eye');
+      }
     }
   }
+  
 
   // Применение настроек прокси
   function applyProxySettings(proxy) {
@@ -172,24 +224,18 @@ document.addEventListener('DOMContentLoaded', () => {
           singleProxy: {
             scheme: proxy.protocol || 'http',
             host: proxy.host,
-            port: parseInt(proxy.port, 10)
+            port: proxy.port,
           },
-          bypassList: []
-        }
+          bypassList: ['localhost', '127.0.0.1'],
+        },
       };
 
-      chrome.proxy.settings.set({ value: proxyConfig, scope: 'regular' }, function () {
-        console.log('Proxy settings applied:', proxy);
+      chrome.proxy.settings.set({ value: proxyConfig, scope: 'regular' }, function() {
+        console.log(`Proxy settings applied: ${proxy.host}:${proxy.port}`);
       });
-    } else {
-      console.error('Invalid proxy settings:', proxy);
+
+      // Сохраняем прокси в chrome.storage.sync
+      chrome.storage.sync.set({ activeProxy: proxy });
     }
   }
-
-  // Обработка обновления статуса
-  chrome.runtime.onMessage.addListener((message) => {
-    if (message.type === 'updateStatus') {
-      updateProxyStatus(message.status);
-    }
-  });
 });
