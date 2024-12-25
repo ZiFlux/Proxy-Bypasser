@@ -2,10 +2,10 @@
     "predefinedProxies": [
       {
         "name": "United Kingdom",
-        "host": "5.252.71.192",
+        "host": "171.22.76.163",
         "username": "user227646",
         "password": "6pw4td",
-        "httpPort": 5919,
+        "httpPort": 8884,
         "protocol": "http"
       },
       {

@@ -8,12 +8,13 @@ function isValidJson(str) {
   }
 }
 
-// Загрузка предустановленных прокси из proxies.json
+// Загрузка предустановленных прокси из файла proxies.json
 fetch(chrome.runtime.getURL('data/proxies.json'))
   .then(response => response.json())
   .then(data => {
     const select = document.getElementById('predefinedProxies');
     if (select) {
+      // Добавление предустановленных прокси в выпадающий список
       data.predefinedProxies.forEach(proxy => {
         const option = document.createElement('option');
         option.value = JSON.stringify(proxy);
@@ -21,6 +22,7 @@ fetch(chrome.runtime.getURL('data/proxies.json'))
         select.appendChild(option);
       });
 
+      // Восстановление сохраненного значения из chrome.storage.sync
       chrome.storage.sync.get(['predefinedProxy'], (dataStorage) => {
         if (dataStorage.predefinedProxy) {
           select.value = JSON.stringify(dataStorage.predefinedProxy);
@@ -32,7 +34,7 @@ fetch(chrome.runtime.getURL('data/proxies.json'))
   })
   .catch(error => console.error('Error loading proxies:', error));
 
-// Управление вкладками с добавлением активного класса
+// Управление вкладками: добавление активного класса при переключении вкладки
 document.querySelectorAll('.tab-button').forEach(button => {
   button.addEventListener('click', () => {
     const tab = button.getAttribute('data-tab');
@@ -49,12 +51,12 @@ document.querySelectorAll('.tab-button').forEach(button => {
     const activeTab = document.getElementById(`${tab}-tab`);
     activeTab.classList.add('active');
     setTimeout(() => {
-      activeTab.style.opacity = 1; // Запустить анимацию появления вкладки
-    }, 10); // Небольшая задержка для корректного старта анимации
+      activeTab.style.opacity = 1; // Запуск анимации появления вкладки
+    }, 10);
   });
 });
 
-// Функция для отображения/скрытия поля для ввода доменов
+// Функция для отображения/скрытия поля ввода доменов
 function toggleSpecificSitesInput() {
   const selectedMode = document.querySelector('input[name="proxyMode"]:checked').value;
   document.getElementById('specificSites').style.display = selectedMode === 'specific' ? 'block' : 'none';
@@ -80,11 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Восстановление состояния выбранного прокси
     if (data.predefinedProxy) {
-      // Если был выбран предустановленный прокси
       predefinedProxiesSelect.value = JSON.stringify(data.predefinedProxy);
       applyProxySettings(data.predefinedProxy);
     } else if (data.customProxy) {
-      // Если был сохранен пользовательский прокси
       applyProxySettings(data.customProxy);
     }
 
@@ -100,22 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Добавление слушателя для переключения режима прокси
+  // Добавление слушателя для изменения режима прокси
   proxyModeRadioButtons.forEach(radio => {
     radio.addEventListener('change', () => {
       toggleSpecificSitesInput();
-      chrome.storage.sync.set({ proxyMode: radio.value }, () => {
-        console.log(`Proxy mode saved: ${radio.value}`);
-      });
+      chrome.storage.sync.set({ proxyMode: radio.value });
     });
   });
 
   // Сохранение списка сайтов для режима "specific"
   sitesListElement.addEventListener('input', () => {
     const sites = sitesListElement.value.split(',').map(site => site.trim()).filter(site => site);
-    chrome.storage.sync.set({ specificSites: sites }, () => {
-      console.log('Specific sites updated:', sites);
-    });
+    chrome.storage.sync.set({ specificSites: sites });
   });
 
   // Сохранение выбранного предустановленного прокси
@@ -129,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       chrome.storage.sync.set({ predefinedProxy: selectedProxy, customProxy: null }, () => {
-        console.log('Predefined proxy selected:', selectedProxy);
         applyProxySettings(selectedProxy);
       });
     });
@@ -205,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-  
 
   // Применение настроек прокси
   function applyProxySettings(proxy) {
