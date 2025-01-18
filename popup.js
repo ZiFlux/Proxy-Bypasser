@@ -62,6 +62,27 @@ function toggleSpecificSitesInput() {
   document.getElementById('specificSites').style.display = selectedMode === 'specific' ? 'block' : 'none';
 }
 
+// Функция для обновления иконки
+function updateIcon(isOnline) {
+  const iconPath = isOnline ? {
+    "16": "/icons/online_icon16.png",
+    "48": "/icons/online_icon48.png",
+    "128": "/icons/online_icon128.png"
+  } : {
+    "16": "/icons/offline_icon16.png",
+    "48": "/icons/offline_icon48.png",
+    "128": "/icons/offline_icon128.png"
+  };
+
+  chrome.action.setIcon({ path: iconPath }, () => {
+    if (chrome.runtime.lastError) {
+      console.error("Ошибка при обновлении иконки:", chrome.runtime.lastError);
+    } else {
+      console.log("Иконка успешно обновлена");
+    }
+  });
+}
+
 // Сохранение состояния при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   const predefinedProxiesSelect = document.getElementById('predefinedProxies');
@@ -78,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data.proxyEnabled !== undefined) {
       toggleProxyButton.innerText = data.proxyEnabled ? 'Disable Proxy' : 'Enable Proxy';
       updateProxyStatus(data.proxyEnabled ? "Подключено" : "Отключено");
+      updateIcon(data.proxyEnabled); // Обновляем иконку при загрузке
     }
 
     // Восстановление состояния выбранного прокси
@@ -168,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.sync.set({ proxyEnabled: newStatus }, () => {
           toggleProxyButton.innerText = newStatus ? 'Disable Proxy' : 'Enable Proxy';
           updateProxyStatus(newStatus ? "Подключено" : "Отключено");
+          updateIcon(newStatus); // Обновляем иконку
         });
       });
     });
