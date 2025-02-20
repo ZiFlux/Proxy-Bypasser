@@ -2,19 +2,19 @@
     "predefinedProxies": [
       {
         "name": "United Kingdom",
-        "host": "171.22.76.163",
+        "host": "45.152.178.38",
         "username": "user227646",
         "password": "6pw4td",
-        "httpPort": 8884,
+        "httpPort": 5140,
         "protocol": "http"
       },
       {
-        "name": "United States(not working)",
-        "host": "107.167.27.58",
-        "username": "Rwv11ERX",
-        "password": "1eA9SvE2",
+        "name": "United States",
+        "host": "77.83.195.222",
+        "username": "user227646",
+        "password": "6pw4td",
         "httpPort": 59658,
-        "protocol": "http"
+        "protocol": "6234"
       }
     ]
   }
