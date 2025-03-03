@@ -2,18 +2,18 @@
     "predefinedProxies": [
       {
         "name": "United Kingdom",
-        "host": "45.152.178.38",
+        "host": "77.83.195.222",
         "username": "user227646",
         "password": "6pw4td",
-        "httpPort": 5140,
+        "httpPort": 6234,
         "protocol": "http"
       },
       {
         "name": "United States",
-        "host": "77.83.195.222",
+        "host": "45.152.178.38",
         "username": "user227646",
         "password": "6pw4td",
-        "httpPort": 59658,
+        "httpPort": 5140,
         "protocol": "6234"
       }
     ]
